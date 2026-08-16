@@ -11,7 +11,6 @@ interface Product {
   category: string;
   images: string;
 }
-
 interface Partner {
   name: string;
   role: string;
@@ -111,7 +110,7 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
         <button onClick={closeProductDetails} className="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
-          Muebles Restaurados
+          Maravillería Studio
         </button>
 
         <div className="flex items-center gap-6">
@@ -380,7 +379,7 @@ export default function Home() {
                 <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
               </div>
               <button 
-                onClick={() => alert('¡Gracias por su compra en Muebles Restaurados!')}
+                onClick={() => alert('¡Gracias por su compra en Maravillería Studio!')}
                 disabled={cart.length === 0}
                 className={`w-full py-3 rounded-lg font-medium text-white transition ${
                   cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
@@ -397,7 +396,7 @@ export default function Home() {
       <footer className="bg-white border-t py-8 px-6 text-gray-500 text-sm">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
           <div>
-            <p className="font-bold text-gray-800 text-base">Muebles Restaurados</p>
+            <p className="font-bold text-gray-800 text-base">Maravillería Studio</p>
             <p className="text-xs text-gray-500 mt-1">Dando una segunda oportunidad a piezas únicas con historia.</p>
           </div>
           <div className="flex gap-6 font-medium">
@@ -406,7 +405,7 @@ export default function Home() {
             <a href="#contacto" onClick={closeProductDetails} className="hover:text-indigo-600 transition">Contacto</a>
           </div>
           <div className="text-xs text-gray-400">
-            &copy; 2026 Muebles Restaurados. Todos los derechos reservados.
+            &copy; 2026 Maravillería Studio. Todos los derechos reservados.
           </div>
         </div>
       </footer>
