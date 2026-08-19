@@ -23,8 +23,6 @@ export function CarritoLateral({
   onRemoveFromCart: (index: number) => void; 
 }) {
   const [isLoading, setIsLoading] = useState(false);
-=======
->>>>>>> 9314f3e (Recuperar diseño completo y original de la tienda)
 
 import { useState } from 'react';
 
