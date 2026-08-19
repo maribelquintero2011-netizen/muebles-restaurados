@@ -1,4 +1,16 @@
-function CarritoLateral({ 
+'use client';
+
+import { useState } from 'react';
+
+// Definición del tipo de producto según tu estructura
+interface Product {
+  title: string;
+  price: number;
+  images: string;
+}
+
+// Componente del Carrito Lateral con la pasarela de pagos integrada
+export function CarritoLateral({ 
   isOpen, 
   onClose, 
   cart, 
@@ -94,5 +106,50 @@ function CarritoLateral({
         </div>
       </div>
     </div>
+  );
+}
+
+// Página Principal (Manteniendo toda tu estructura original de la tienda)
+export default function Home() {
+  // Aquí puedes dejar tu lógica de la tienda, estados del carrito principal, productos, etc.
+  const [cart, setCart] = useState<Product[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleAddToCart = (product: Product) => {
+    setCart([...cart, product]);
+  };
+
+  const handleRemoveFromCart = (index: number) => {
+    const newCart = cart.filter((_, i) => i !== index);
+    setCart(newCart);
+  };
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Tu barra de navegación o encabezado existente */}
+      <header className="flex justify-between items-center p-6 bg-white shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-800">Estudio Maravillería</h1>
+        <button 
+          onClick={() => setIsCartOpen(true)}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium"
+        >
+          Carrito ({cart.length})
+        </button>
+      </header>
+
+      {/* Contenido de la tienda / galería de muebles restaurados */}
+      <div className="p-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-700">Catálogo</h2>
+        {/* Aquí va el despliegue de tus productos de muebles restaurados */}
+      </div>
+
+      {/* Carrito Lateral Desplegable */}
+      <CarritoLateral 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        cart={cart} 
+        onRemoveFromCart={handleRemoveFromCart} 
+      />
+    </main>
   );
 }
