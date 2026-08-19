@@ -1,30 +1,4 @@
 'use client';
-<<<<<<< HEAD
-
-import { useState } from 'react';
-
-// Definición del tipo de producto según tu estructura
-interface Product {
-  title: string;
-  price: number;
-  images: string;
-}
-
-// Componente del Carrito Lateral con la pasarela de pagos integrada
-export function CarritoLateral({ 
-  isOpen, 
-  onClose, 
-  cart, 
-  onRemoveFromCart 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  cart: Product[]; 
-  onRemoveFromCart: (index: number) => void; 
-}) {
-  const [isLoading, setIsLoading] = useState(false);
-=======
->>>>>>> 9314f3e (Recuperar diseño completo y original de la tienda)
 
 import { useState } from 'react';
 
