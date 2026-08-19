@@ -97,7 +97,7 @@ export default function Home() {
       fullDescription: "Esta exquisita silla estilo Luis XV ha sido cuidadosamente restaurada a mano. El marco de madera de haya maciza ha sido lijado y teñido en un tono nogal oscuro, y tapizada con un lujoso terciopelo azul marino. Ideal para dar un toque de elegancia clásica a cualquier rincón de tu hogar.",
       price: 120.00,
       category: "Sillas",
-      images: "/silla-restaurada.jpg"
+      images: "/imagen1.jpg.jfif"
     },
     {
       id: 2,
@@ -106,7 +106,7 @@ export default function Home() {
       fullDescription: "Consola minimalista de líneas rectas, fabricada en madera de roble macizo con acabado natural. Cuenta con dos cajones frontales sin tiradores para mantener un diseño limpio. Perfecta para colocar en la entrada y organizar llaves y correo con estilo.",
       price: 150.00,
       category: "Mesas",
-      images: "/consola.jpg"
+      images: "imagen2.jpg.jfif"
     },
     {
       id: 3,
@@ -175,10 +175,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-between relative">
       {/* Header */}
-      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
-        <button onClick={closeProductDetails} className="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
-          Maravillería Studio
-        </button>
+     <button onClick={closeProductDetails} className="flex items-center gap-2 text-2xl font-bold text-indigo-600">
+  <img src="/logo.jpg" alt="Logo" className="h-10 w-auto" />
+  Maravillería Studio
+</button>
 
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-4">
