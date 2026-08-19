@@ -174,11 +174,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-between relative">
-      {/* Header */}
-     <button onClick={closeProductDetails} className="flex items-center gap-2 text-2xl font-bold text-indigo-600">
-  <img src="/logo.jpg" alt="Logo" className="h-10 w-auto" />
-  Maravillería Studio
-</button>
+      {/* Header Corregido */}
+      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
+        <button onClick={closeProductDetails} className="flex items-center gap-2 text-2xl font-bold text-indigo-600 hover:text-indigo-700">
+          <img src="/logo.jpg" alt="Logo" className="h-10 w-auto object-contain" />
+          Maravillería Studio
+        </button>
 
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-4">
