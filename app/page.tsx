@@ -73,7 +73,7 @@ function CarritoLateral({
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
           </div>
           <button 
-            onClick={() => window.location.href = 'https://TU_LINK_DE_PAGO_AQUI'}
+            onClick={() => window.location.href = 'https://wa.me/34600123456'}
             disabled={cart.length === 0}
             className={`w-full py-3 rounded-lg font-medium text-white transition ${
               cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
