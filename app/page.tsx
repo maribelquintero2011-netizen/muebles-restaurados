@@ -73,13 +73,13 @@ function CarritoLateral({
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
           </div>
           <button 
-            onClick={() => alert('¡Gracias por su compra en Maravillería Studio!')}
+            onClick={() => window.location.href = 'https://TU_LINK_DE_PAGO_AQUI'}
             disabled={cart.length === 0}
             className={`w-full py-3 rounded-lg font-medium text-white transition ${
-              cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+              cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
             }`}
           >
-            Finalizar Compra
+            Finalizar Compra (Pagar)
           </button>
         </div>
       </div>
@@ -89,6 +89,7 @@ function CarritoLateral({
 
 // Página Principal
 export default function Home() {
+  // Productos (Se eliminó la Mesa de Centro Industrial)
   const [products] = useState<Product[]>([
     {
       id: 1,
@@ -107,30 +108,22 @@ export default function Home() {
       price: 150.00,
       category: "Mesas",
       images: "imagen2.jpg.jfif"
-    },
-    {
-      id: 3,
-      title: "Mesa de Centro Industrial",
-      description: "Mesa elaborada con madera recuperada y estructura de metal.",
-      fullDescription: "Robusta mesa de centro estilo industrial. El tablero está hecho de madera de pino recuperada con marcas e imperfecciones naturales que le dan carácter, sostenida por una estructura geométrica de acero negro mate. Un mueble con personalidad propia para tu salón.",
-      price: 250.00,
-      category: "Mesas",
-      images: "/mesita.jpg"
     }
   ]);
 
+  // Socios con los nuevos nombres
   const partners: Partner[] = [
     {
-      name: "Ana Martínez",
-      role: "Co-fundadora & Restauradora Principal",
-      description: "Especialista en ebanistería clásica y recuperación de texturas originales. Apasionada por mantener la esencia histórica de cada mueble adaptándolo a la estética contemporánea.",
-      image: "/ana.jpg"
+      name: "Emil Carrasquel",
+      role: "Co-fundador & Restaurador Principal",
+      description: "Especialista en ebanistería clásica y recuperación de texturas originales. Apasionado por mantener la esencia histórica de cada mueble adaptándolo a la estética contemporánea.",
+      image: "/emil.jpg"
     },
     {
-      name: "Carlos Ruiz",
-      role: "Co-fundador & Diseñador Estructural",
-      description: "Arquitecto enfocado en la integración de mobiliario dentro del espacio arquitectónico. Defiende el minimalismo funcional y la durabilidad de los materiales nobles.",
-      image: "/carlos.jpg"
+      name: "Federica Delcuratolo",
+      role: "Co-fundadora & Diseñadora Estructural",
+      description: "Arquitecta enfocada en la integración de mobiliario dentro del espacio arquitectónico. Defiende el minimalismo funcional y la durabilidad de los materiales nobles.",
+      image: "/federica.jpg"
     }
   ];
 
@@ -138,7 +131,6 @@ export default function Home() {
   const [cart, setCart] = useState<Product[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -174,250 +166,216 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-between relative">
-      {/* Header Corregido */}
+      {/* Header modificado: Logo más grande, sin el texto de la marca */}
       <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
-        <button onClick={closeProductDetails} className="flex items-center gap-2 text-2xl font-bold text-indigo-600 hover:text-indigo-700">
-          <img src="/logo.jpg" alt="Logo" className="h-10 w-auto object-contain" />
-          Maravillería Studio
+        <button onClick={closeProductDetails} className="flex items-center gap-2">
+           <img src="/logo.jpg" alt="Logo" className="h-16 w-auto object-contain" />
         </button>
 
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-4">
-            <a href="#catalogo" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Catálogo
-            </a>
-            <a href="#quienes-somos" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Quiénes somos
-            </a>
-            <a href="#contacto" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Contacto
-            </a>
+            <a href="#catalogo" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Catálogo</a>
+            <a href="#quienes-somos" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Quiénes somos</a>
+            <a href="#contacto" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Contacto</a>
           </nav>
-
           <button 
             onClick={() => setIsCartOpen(true)}
             className="flex items-center gap-2 bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-100 transition relative"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
             <span>Carrito ({cart.length})</span>
           </button>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12 flex-grow w-full">
         {selectedProduct ? (
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <button onClick={closeProductDetails} className="text-indigo-600 hover:text-indigo-800 mb-8 flex items-center gap-2 font-medium">
+            <button 
+              onClick={closeProductDetails}
+              className="text-indigo-600 hover:text-indigo-800 font-medium mb-8 flex items-center gap-2 transition"
+            >
               &larr; Volver al catálogo
             </button>
-            
-            <div className="grid md:grid-cols-2 gap-12">
-              <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-auto object-cover rounded-xl shadow-md" />
-              
-              <div className="flex flex-col justify-between">
-                <div>
-                  <span className="text-sm text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full font-medium">{selectedProduct.category}</span>
-                  <h2 className="text-4xl font-extrabold text-gray-900 mt-3 mb-5">{selectedProduct.title}</h2>
-                  <p className="text-gray-700 text-lg leading-relaxed">{selectedProduct.fullDescription}</p>
+
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              <div className="rounded-xl overflow-hidden shadow-md bg-gray-100">
+                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-96 object-cover" />
+              </div>
+              <div>
+                <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
+                <h1 className="text-3xl font-bold text-gray-900 mt-2">{selectedProduct.title}</h1>
+                <p className="text-2xl font-bold text-indigo-600 mt-4">${selectedProduct.price.toFixed(2)}</p>
+                
+                <div className="mt-6 border-t pt-6">
+                  <h3 className="text-lg font-semibold text-gray-800">Descripción detallada</h3>
+                  <p className="text-gray-600 mt-2 leading-relaxed">{selectedProduct.fullDescription}</p>
                 </div>
 
-                <div className="mt-10 border-t pt-8 flex items-center justify-between">
-                  <p className="text-5xl font-extrabold text-indigo-600">${selectedProduct.price.toFixed(2)}</p>
-                  <button 
-                    onClick={() => handleAddToCart(selectedProduct)}
-                    className="bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-indigo-700 transition transform hover:scale-105 shadow-md"
-                  >
-                    Añadir al carrito
-                  </button>
-                </div>
+                <button 
+                  onClick={() => handleAddToCart(selectedProduct)}
+                  className="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-indigo-100"
+                >
+                  Añadir al carrito
+                </button>
               </div>
             </div>
           </div>
         ) : (
           <>
-            {/* Sección Quiénes somos */}
-            <section id="quienes-somos" className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-gray-100 mb-16 scroll-mt-24">
-              <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12">
-                  <span className="text-sm font-semibold tracking-wider text-indigo-600 uppercase">Filosofía y Estudio</span>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-4">Los Socios y Arquitectos</h2>
-                  <p className="text-gray-600 text-lg leading-relaxed max-w-2xl mx-auto">
-                    Combinamos la precisión arquitectónica con el rescate artesanal para devolver la vida a piezas con historia, creando espacios y objetos atemporales.
-                  </p>
-                </div>
+            {/* Sección Quiénes Somos con Nuevos Nombres */}
+            <section id="quienes-somos" className="bg-white rounded-2xl p-8 shadow-sm mb-16">
+              <div className="text-center max-w-2xl mx-auto">
+                <span className="text-xs font-semibold text-indigo-600 uppercase tracking-widest">Filosofía y Estudio</span>
+                <h2 className="text-3xl font-extrabold text-gray-900 mt-2">Los Socios y Arquitectos</h2>
+                <p className="text-gray-600 mt-4">Combinamos la precisión arquitectónica con el rescate artesanal para devolver la vida a piezas con historia, creando espacios y objetos atemporales.</p>
+              </div>
 
-                <div className="grid md:grid-cols-2 gap-10">
-                  {partners.map((partner, index) => (
-                    <div key={index} className="bg-gray-50 p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center justify-between">
-                      <div className="w-full flex flex-col items-center">
-                        <div className="w-32 h-32 mb-6 rounded-full overflow-hidden shadow-md border-4 border-white bg-gray-200">
-                          <img src={partner.image} alt={partner.name} className="w-full h-full object-cover" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-1">{partner.name}</h3>
-                        <p className="text-sm text-indigo-600 font-medium mb-4">{partner.role}</p>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {partner.description}
-                        </p>
+              <div className="grid md:grid-cols-2 gap-10 mt-12">
+                {partners.map((partner, index) => (
+                  <div key={index} className="flex flex-col items-center text-center p-6 border rounded-2xl hover:shadow-md transition">
+                    <img src={partner.image} alt={partner.name} className="w-32 h-32 rounded-full object-cover shadow-md mb-4" />
+                    <h3 className="text-xl font-bold text-gray-900">{partner.name}</h3>
+                    <p className="text-indigo-600 font-medium text-sm mt-1">{partner.role}</p>
+                    <p className="text-gray-600 text-sm mt-3 leading-relaxed">{partner.description}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Sección de Catálogo */}
+            <section id="catalogo" className="mb-16">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-gray-900">Nuestros Muebles Restaurados</h2>
+                <p className="text-gray-600 mt-2">Piezas únicas restauradas a mano para darle vida a tus espacios.</p>
+                
+                <div className="flex justify-center gap-2 mt-6">
+                  {["Todos", "Sillas", "Mesas"].map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-5 py-2 rounded-full text-sm font-medium transition ${
+                        selectedCategory === category
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-100"
+                          : "bg-white text-gray-600 border hover:bg-gray-50"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {filteredProducts.map((product) => (
+                  <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
+                    <div>
+                      <div className="h-64 overflow-hidden bg-gray-100 cursor-pointer" onClick={() => viewProductDetails(product)}>
+                        <img src={product.images} alt={product.title} className="w-full h-full object-cover hover:scale-105 transition duration-500" />
+                      </div>
+                      <div className="p-6">
+                        <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer hover:text-indigo-600 transition">{product.title}</h3>
+                        <p className="text-gray-600 text-sm mt-2">{product.description}</p>
+                        <p className="text-indigo-600 font-bold text-xl mt-4">${product.price.toFixed(2)}</p>
                       </div>
                     </div>
-                  ))}
+                    <div className="p-6 pt-0">
+                      <button 
+                        onClick={() => handleAddToCart(product)}
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-medium transition shadow-sm"
+                      >
+                        Añadir al carrito
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Nueva Sección de Opiniones */}
+            <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Lo que dicen nuestros clientes</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
+                  "La silla Luis XV superó mis expectativas. Se nota el amor y la dedicación en cada detalle de restauración."
+                </div>
+                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
+                  "Excelente atención y piezas con una personalidad única que transformaron por completo la estética de mi recibidor."
+                </div>
+                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
+                  "Gran profesionalismo por parte del equipo. Envío seguro y producto impecable. Totalmente recomendados."
                 </div>
               </div>
             </section>
 
-            {/* Catálogo de Muebles */}
-            <div id="catalogo" className="text-center mb-8 scroll-mt-24">
-              <h2 className="text-3xl font-extrabold text-gray-900">Nuestros Muebles Restaurados</h2>
-              <p className="mt-2 text-gray-600">Piezas únicas restauradas a mano para darle vida a tus espacios.</p>
-            </div>
-
-            <div className="flex justify-center gap-3 mb-10">
-              {["Todos", "Sillas", "Mesas"].map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    selectedCategory === category
-                      ? "bg-indigo-600 text-white shadow-md"
-                      : "bg-white text-gray-600 border hover:bg-gray-100"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-              {filteredProducts.map((product) => (
-                <div key={product.id} className="bg-white border rounded-xl overflow-hidden shadow-sm flex flex-col justify-between transition hover:shadow-lg">
-                  <div className="cursor-pointer" onClick={() => viewProductDetails(product)}>
-                    <img src={product.images} alt={product.title} className="w-full h-48 object-cover" />
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg text-gray-800">{product.title}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{product.description}</p>
-                      <p className="text-indigo-600 font-semibold mt-4 text-lg">${product.price.toFixed(2)}</p>
-                    </div>
-                  </div>
-                  <div className="p-4 pt-0">
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition"
-                    >
-                      Añadir al carrito
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Diseño Personalizado */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto my-12">
-              <h3 className="text-2xl font-bold text-gray-900 text-center mb-2">¿Buscas un diseño personalizado?</h3>
-              <p className="text-gray-600 text-center mb-6 text-sm">Contáctanos para restauraciones a medida o consultas especiales.</p>
+            {/* Sección de Contacto */}
+            <section id="contacto" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Contacto</h2>
+              <p className="text-center text-gray-600 mb-8">¿Tienes alguna duda o buscas una pieza personalizada? Escríbenos.</p>
               
-              {formSubmitted ? (
-                <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl text-center font-medium">
+              {formSubmitted && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-center">
                   ¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.
                 </div>
-              ) : (
-                <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={contactForm.name}
-                      onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Tu nombre"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-                    <input 
-                      type="email" 
-                      required
-                      value={contactForm.email}
-                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="tu@correo.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
-                    <textarea 
-                      rows={3} 
-                      required
-                      value={contactForm.message}
-                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Cuéntanos sobre tu proyecto o duda..."
-                    />
-                  </div>
-                  <button 
-                    type="submit" 
-                    className="w-full bg-indigo-600 text-white font-medium py-2.5 rounded-lg hover:bg-indigo-700 transition"
-                  >
-                    Enviar Mensaje
-                  </button>
-                </form>
               )}
-            </div>
 
-            {/* Sección de Contacto */}
-            <section id="contacto" className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-gray-100 max-w-2xl mx-auto my-12 scroll-mt-24 text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Información de Contacto</h3>
-              <p className="text-gray-600 text-sm mb-6">Visítanos en nuestro estudio o comunícate con nosotros directamente.</p>
-              
-              <div className="space-y-4 text-gray-700">
-                <div className="flex items-center justify-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <p className="font-medium">Calle Principal #123, Colonia Centro, Ciudad</p>
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={contactForm.name}
+                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                    className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    placeholder="Tu nombre"
+                  />
                 </div>
-
-                <div className="flex items-center justify-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <p className="font-medium">+34 900 123 456</p>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                  <input 
+                    type="email" 
+                    required
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    placeholder="tucorreo@example.com"
+                  />
                 </div>
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+                  <textarea 
+                    rows={4}
+                    required
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    placeholder="Cuéntanos qué necesitas..."
+                  />
+                </div>
+                <button 
+                  type="submit"
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition shadow-md shadow-indigo-100"
+                >
+                  Enviar mensaje
+                </button>
+              </form>
             </section>
           </>
         )}
       </main>
 
-      {/* Carrito Lateral Componente */}
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-100 py-8 mt-16 text-center text-sm text-gray-500">
+        <p>&copy; {new Date().getFullYear()} Muebles Restaurados. Todos los derechos reservados.</p>
+      </footer>
+
+      {/* Carrito Lateral */}
       <CarritoLateral 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
         cart={cart} 
-        onRemoveFromCart={handleRemoveFromCart}
+        onRemoveFromCart={handleRemoveFromCart} 
       />
-
-      {/* Footer */}
-      <footer className="bg-white border-t py-8 px-6 text-gray-500 text-sm">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-          <div>
-            <p className="font-bold text-gray-800 text-base">Maravillería Studio</p>
-            <p className="text-xs text-gray-500 mt-1">Dando una segunda oportunidad a piezas únicas con historia.</p>
-          </div>
-          <div className="flex gap-6 font-medium">
-            <a href="#catalogo" onClick={closeProductDetails} className="hover:text-indigo-600 transition">Catálogo</a>
-            <button onClick={closeProductDetails} className="hover:text-indigo-600 transition">Inicio</button>
-            <a href="#contacto" onClick={closeProductDetails} className="hover:text-indigo-600 transition">Contacto</a>
-          </div>
-          <div className="text-xs text-gray-400">
-            &copy; 2026 Maravillería Studio. Todos los derechos reservados.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
