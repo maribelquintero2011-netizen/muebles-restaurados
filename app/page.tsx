@@ -55,7 +55,7 @@ function CarritoLateral({
             cart.map((item, index) => (
               <div key={index} className="flex items-center justify-between border-b pb-3">
                 <div className="flex items-center gap-3">
-                  <img src={item.images} alt={item.title} className="w-16 h-16 object-cover rounded-md bg-gray-50" />
+                  <img src={item.images} alt={item.title} className="w-16 h-16 object-contain rounded-md bg-gray-50" />
                   <div>
                     <h4 className="font-medium text-sm text-gray-800">{item.title}</h4>
                     <p className="text-indigo-600 font-semibold text-sm">${item.price.toFixed(2)}</p>
@@ -232,8 +232,8 @@ export default function Home() {
             </button>
 
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div className="rounded-xl overflow-hidden shadow-md bg-white p-4 flex items-center justify-center border">
-                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-80 object-cover rounded-lg" />
+              <div className="rounded-xl overflow-hidden shadow-md bg-gray-50 p-6 flex items-center justify-center border">
+                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-80 object-contain rounded-lg" />
               </div>
               <div>
                 <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
@@ -301,9 +301,9 @@ export default function Home() {
                 {filteredProducts.map((product) => (
                   <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
                     <div>
-                      {/* Imagen con object-cover y altura fija para que se vea perfectamente proporcionada */}
-                      <div className="h-64 overflow-hidden bg-white cursor-pointer" onClick={() => viewProductDetails(product)}>
-                        <img src={product.images} alt={product.title} className="w-full h-full object-cover hover:scale-105 transition duration-500" />
+                      {/* Contenedor con object-contain y fondo gris claro sutil para que la imagen se vea completa perfectamente */}
+                      <div className="h-64 overflow-hidden bg-gray-50 cursor-pointer p-4 flex items-center justify-center" onClick={() => viewProductDetails(product)}>
+                        <img src={product.images} alt={product.title} className="w-full h-full object-contain hover:scale-105 transition duration-500" />
                       </div>
                       <div className="p-6">
                         <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer hover:text-indigo-600 transition">{product.title}</h3>
@@ -324,7 +324,6 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Sección de Opiniones y Comentarios de Clientes */}
             <section id="comentarios" className="my-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
               <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Opiniones de Clientes</h2>
               <p className="text-center text-gray-600 mb-10">Comparte tu experiencia (positiva o negativa) sobre nuestros productos.</p>
@@ -392,7 +391,6 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Sección de Solicitudes y Restauraciones (Encargo de muebles o reparaciones) */}
             <section id="solicitudes" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto mb-16">
               <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Solicitudes y Restauraciones</h2>
               <p className="text-center text-gray-600 mb-8">¿Quieres mandar a restaurar un mueble propio o solicitar un diseño específico a medida?</p>
@@ -457,7 +455,6 @@ export default function Home() {
               </form>
             </section>
 
-            {/* Sección de Contacto (Dirección, Teléfono, Redes Sociales) */}
             <section id="contacto" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Contacto y Ubicación</h2>
               <p className="text-gray-600 mb-8">Encuéntranos o comunícate directamente con nuestro estudio.</p>
