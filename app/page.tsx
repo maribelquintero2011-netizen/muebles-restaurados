@@ -80,13 +80,16 @@ function CarritoLateral({
               cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
             }`}
           >
-            Finalizar Compra (Pagar)
-          </button>
-
-// Página Principal
-export default function Home() {
-  // Productos (Se eliminó la Mesa de Centro Industrial)
-  const [products] = useState<Product[]>([
+           Finalizar Compra (Pagar)
+</button>
+        </div>
+      </div>
+    );
+  } 
+   
+  export default function Home() {
+    // Productos (Se eliminó la Mesa de Centro Industrial)
+    const [products] = useState<Product[]>([
     {
       id: 1,
       title: "Silla Luis XV Restaurada",
