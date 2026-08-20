@@ -67,11 +67,12 @@ function CarritoLateral({
           )}
         </div>
 
-        <div className="border-t pt-4">
-          <div className="flex justify-between font-bold text-lg mb-4">
+        <div className="border-t pt-4 space-y-4">
+          <div className="flex justify-between font-bold text-lg">
             <span>Total:</span>
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
-<button 
+          </div>
+          <button 
             onClick={() => {
               window.location.href = '/api/checkout';
             }}
@@ -80,15 +81,17 @@ function CarritoLateral({
               cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
             }`}
           >
-           Finalizar Compra (Pagar)
-</button>
+            Finalizar Compra (Pagar)
+          </button>
         </div>
-    );
-  } 
+      </div>
+    </div>
+  );
+}
 
-  export default function Home() {
-    // Productos (Se eliminó la Mesa de Centro Industrial)
-    const [products] = useState<Product[]>([
+export default function Home() {
+  // Productos (Se eliminó la Mesa de Centro Industrial)
+  const [products] = useState<Product[]>([
     {
       id: 1,
       title: "Silla Luis XV Restaurada",
@@ -374,5 +377,6 @@ function CarritoLateral({
         cart={cart} 
         onRemoveFromCart={handleRemoveFromCart} 
       />
-</div>
+    </div>
+  );
 }
