@@ -83,10 +83,9 @@ function CarritoLateral({
            Finalizar Compra (Pagar)
 </button>
         </div>
-      </div>
     );
   } 
-   
+
   export default function Home() {
     // Productos (Se eliminó la Mesa de Centro Industrial)
     const [products] = useState<Product[]>([
