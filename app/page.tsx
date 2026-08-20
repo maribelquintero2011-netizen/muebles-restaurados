@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-// Definición de tipos
 interface Product {
   id: number;
   title: string;
@@ -20,7 +19,12 @@ interface Partner {
   image: string;
 }
 
-// Componente del Carrito Lateral
+interface Review {
+  name: string;
+  comment: string;
+  rating: number;
+}
+
 function CarritoLateral({ 
   isOpen, 
   onClose, 
@@ -51,7 +55,7 @@ function CarritoLateral({
             cart.map((item, index) => (
               <div key={index} className="flex items-center justify-between border-b pb-3">
                 <div className="flex items-center gap-3">
-                  <img src={item.images} alt={item.title} className="w-16 h-16 object-cover rounded-md" />
+                  <img src={item.images} alt={item.title} className="w-16 h-16 object-cover rounded-md bg-gray-50" />
                   <div>
                     <h4 className="font-medium text-sm text-gray-800">{item.title}</h4>
                     <p className="text-indigo-600 font-semibold text-sm">${item.price.toFixed(2)}</p>
@@ -88,6 +92,7 @@ function CarritoLateral({
                 }
               } catch (error) {
                 console.error('Error:', error);
+                alert('Ocurrió un error de red al procesar el pago.');
               }
             }}
             disabled={cart.length === 0}
@@ -104,7 +109,6 @@ function CarritoLateral({
 }
 
 export default function Home() {
-  // Productos (Se eliminó la Mesa de Centro Industrial)
   const [products] = useState<Product[]>([
     {
       id: 1,
@@ -126,7 +130,6 @@ export default function Home() {
     }
   ]);
 
-  // Socios con los nuevos nombres
   const partners: Partner[] = [
     {
       name: "Emil Carrasquel",
@@ -142,12 +145,19 @@ export default function Home() {
     }
   ];
 
+  const [reviews, setReviews] = useState<Review[]>([
+    { name: "Sofía Martínez", comment: "La silla Luis XV superó mis expectativas. Se nota el amor y la dedicación en cada detalle.", rating: 5 },
+    { name: "Carlos Ruiz", comment: "El acabado fue bueno, aunque el envío tardó un poco más de lo esperado.", rating: 3 }
+  ]);
+
+  const [newReview, setNewReview] = useState({ name: '', comment: '', rating: 5 });
+  const [requestForm, setRequestForm] = useState({ name: '', email: '', type: 'Restauración', message: '' });
+  const [requestSubmitted, setRequestSubmitted] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [cart, setCart] = useState<Product[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const filteredProducts = selectedCategory === "Todos" 
     ? products 
@@ -170,18 +180,25 @@ export default function Home() {
     setSelectedProduct(null);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleRequestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (contactForm.name && contactForm.email && contactForm.message) {
-      setFormSubmitted(true);
-      setContactForm({ name: '', email: '', message: '' });
-      setTimeout(() => setFormSubmitted(false), 5000);
+    if (requestForm.name && requestForm.email && requestForm.message) {
+      setRequestSubmitted(true);
+      setRequestForm({ name: '', email: '', type: 'Restauración', message: '' });
+      setTimeout(() => setRequestSubmitted(false), 5000);
+    }
+  };
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newReview.name && newReview.comment) {
+      setReviews([newReview, ...reviews]);
+      setNewReview({ name: '', comment: '', rating: 5 });
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-between relative">
-      {/* Header modificado: Logo más grande, sin el texto de la marca */}
       <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
         <button onClick={closeProductDetails} className="flex items-center gap-2">
            <img src="/logo.jpg" alt="Logo" className="h-16 w-auto object-contain" />
@@ -191,6 +208,8 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-4">
             <a href="#catalogo" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Catálogo</a>
             <a href="#quienes-somos" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Quiénes somos</a>
+            <a href="#comentarios" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Opiniones</a>
+            <a href="#solicitudes" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Restauración y Pedidos</a>
             <a href="#contacto" onClick={closeProductDetails} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">Contacto</a>
           </nav>
           <button 
@@ -213,8 +232,8 @@ export default function Home() {
             </button>
 
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div className="rounded-xl overflow-hidden shadow-md bg-gray-100">
-                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-96 object-cover" />
+              <div className="rounded-xl overflow-hidden shadow-md bg-white p-4 flex items-center justify-center border">
+                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-80 object-cover rounded-lg" />
               </div>
               <div>
                 <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
@@ -237,7 +256,6 @@ export default function Home() {
           </div>
         ) : (
           <>
-            {/* Sección Quiénes Somos con Nuevos Nombres */}
             <section id="quienes-somos" className="bg-white rounded-2xl p-8 shadow-sm mb-16">
               <div className="text-center max-w-2xl mx-auto">
                 <span className="text-xs font-semibold text-indigo-600 uppercase tracking-widest">Filosofía y Estudio</span>
@@ -257,7 +275,6 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Sección de Catálogo */}
             <section id="catalogo" className="mb-16">
               <div className="text-center mb-10">
                 <h2 className="text-3xl font-bold text-gray-900">Nuestros Muebles Restaurados</h2>
@@ -284,7 +301,8 @@ export default function Home() {
                 {filteredProducts.map((product) => (
                   <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
                     <div>
-                      <div className="h-64 overflow-hidden bg-gray-100 cursor-pointer" onClick={() => viewProductDetails(product)}>
+                      {/* Imagen con object-cover y altura fija para que se vea perfectamente proporcionada */}
+                      <div className="h-64 overflow-hidden bg-white cursor-pointer" onClick={() => viewProductDetails(product)}>
                         <img src={product.images} alt={product.title} className="w-full h-full object-cover hover:scale-105 transition duration-500" />
                       </div>
                       <div className="p-6">
@@ -306,41 +324,93 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Nueva Sección de Opiniones */}
-            <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Lo que dicen nuestros clientes</h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
-                  "La silla Luis XV superó mis expectativas. Se nota el amor y la dedicación en cada detalle de restauración."
-                </div>
-                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
-                  "Excelente atención y piezas con una personalidad única que transformaron por completo la estética de mi recibidor."
-                </div>
-                <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 italic text-gray-700">
-                  "Gran profesionalismo por parte del equipo. Envío seguro y producto impecable. Totalmente recomendados."
-                </div>
+            {/* Sección de Opiniones y Comentarios de Clientes */}
+            <section id="comentarios" className="my-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Opiniones de Clientes</h2>
+              <p className="text-center text-gray-600 mb-10">Comparte tu experiencia (positiva o negativa) sobre nuestros productos.</p>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-12">
+                {reviews.map((rev, idx) => (
+                  <div key={idx} className="p-6 bg-gray-50 rounded-xl border border-gray-100 flex flex-col justify-between shadow-sm">
+                    <div>
+                      <div className="text-yellow-500 mb-2">
+                        {"★".repeat(rev.rating)}{"☆".repeat(5 - rev.rating)}
+                      </div>
+                      <p className="italic text-gray-700 text-sm mb-4">"{rev.comment}"</p>
+                    </div>
+                    <p className="font-bold text-gray-900 text-sm">— {rev.name}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="max-w-xl mx-auto bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Déjanos tu opinión</h3>
+                <form onSubmit={handleReviewSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Tu Nombre</label>
+                    <input 
+                      type="text"
+                      required
+                      value={newReview.name}
+                      onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                      className="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                      placeholder="Ej. Roberto Sánchez"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Calificación</label>
+                    <select 
+                      value={newReview.rating}
+                      onChange={(e) => setNewReview({ ...newReview, rating: Number(e.target.value) })}
+                      className="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    >
+                      <option value={5}>★★★★★ (Excelente)</option>
+                      <option value={4}>★★★★☆ (Muy bueno)</option>
+                      <option value={3}>★★★☆☆ (Regular)</option>
+                      <option value={2}>★★☆☆☆ (Malo)</option>
+                      <option value={1}>★☆☆☆☆ (Muy malo)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Tu Comentario</label>
+                    <textarea 
+                      rows={3}
+                      required
+                      value={newReview.comment}
+                      onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                      className="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                      placeholder="Cuéntanos qué te pareció el producto..."
+                    />
+                  </div>
+                  <button 
+                    type="submit"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm"
+                  >
+                    Publicar Opinión
+                  </button>
+                </form>
               </div>
             </section>
 
-            {/* Sección de Contacto */}
-            <section id="contacto" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto">
-              <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Contacto</h2>
-              <p className="text-center text-gray-600 mb-8">¿Tienes alguna duda o buscas una pieza personalizada? Escríbenos.</p>
+            {/* Sección de Solicitudes y Restauraciones (Encargo de muebles o reparaciones) */}
+            <section id="solicitudes" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto mb-16">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">Solicitudes y Restauraciones</h2>
+              <p className="text-center text-gray-600 mb-8">¿Quieres mandar a restaurar un mueble propio o solicitar un diseño específico a medida?</p>
               
-              {formSubmitted && (
+              {requestSubmitted && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-center">
-                  ¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.
+                  ¡Solicitud enviada con éxito! Nos pondremos en contacto contigo para coordinar los detalles.
                 </div>
               )}
 
-              <form onSubmit={handleContactSubmit} className="space-y-4">
+              <form onSubmit={handleRequestSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
                   <input 
                     type="text" 
                     required
-                    value={contactForm.name}
-                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                    value={requestForm.name}
+                    onChange={(e) => setRequestForm({ ...requestForm, name: e.target.value })}
                     className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                     placeholder="Tu nombre"
                   />
@@ -350,41 +420,67 @@ export default function Home() {
                   <input 
                     type="email" 
                     required
-                    value={contactForm.email}
-                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    value={requestForm.email}
+                    onChange={(e) => setRequestForm({ ...requestForm, email: e.target.value })}
                     className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                     placeholder="tucorreo@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Servicio</label>
+                  <select 
+                    value={requestForm.type}
+                    onChange={(e) => setRequestForm({ ...requestForm, type: e.target.value })}
+                    className="w-full border rounded-xl px-4 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                    <option value="Restauración">Restauración de un mueble propio</option>
+                    <option value="Personalizado">Solicitar un mueble personalizado / a medida</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cuéntanos los detalles</label>
                   <textarea 
                     rows={4}
                     required
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    value={requestForm.message}
+                    onChange={(e) => setRequestForm({ ...requestForm, message: e.target.value })}
                     className="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                    placeholder="Cuéntanos qué necesitas..."
+                    placeholder="Describe las medidas, el estado del mueble o lo que necesitas..."
                   />
                 </div>
                 <button 
                   type="submit"
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition shadow-md shadow-indigo-100"
                 >
-                  Enviar mensaje
+                  Enviar Solicitud
                 </button>
               </form>
+            </section>
+
+            {/* Sección de Contacto (Dirección, Teléfono, Redes Sociales) */}
+            <section id="contacto" className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Contacto y Ubicación</h2>
+              <p className="text-gray-600 mb-8">Encuéntranos o comunícate directamente con nuestro estudio.</p>
+              
+              <div className="space-y-4 text-gray-700">
+                <p><strong>Dirección del Estudio:</strong> Calle Principal de Ebanistería #123, Ciudad</p>
+                <p><strong>Teléfono / WhatsApp:</strong> +1 (555) 123-4567</p>
+                <p><strong>Correo electrónico:</strong> contacto@maravilleria.com</p>
+                <div className="pt-4 flex justify-center gap-6">
+                  <a href="#" className="text-indigo-600 font-medium hover:underline">Instagram</a>
+                  <a href="#" className="text-indigo-600 font-medium hover:underline">Facebook</a>
+                  <a href="#" className="text-indigo-600 font-medium hover:underline">Pinterest</a>
+                </div>
+              </div>
             </section>
           </>
         )}
       </main>
 
-      {/* Footer */}
       <footer className="bg-white border-t border-gray-100 py-8 mt-16 text-center text-sm text-gray-500">
         <p>&copy; {new Date().getFullYear()} Muebles Restaurados. Todos los derechos reservados.</p>
       </footer>
 
-      {/* Carrito Lateral */}
       <CarritoLateral 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
