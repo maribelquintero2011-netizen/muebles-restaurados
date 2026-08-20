@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         },
         unit_amount: Math.round(item.price * 100),
       },
-      quantity: item.quantity || 1,
+      quantity: 1,
     }));
 
     const session = await stripe.checkout.sessions.create({
