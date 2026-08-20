@@ -71,7 +71,7 @@ function CarritoLateral({
           <div className="flex justify-between font-bold text-lg mb-4">
             <span>Total:</span>
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
- <button 
+<button 
             onClick={() => {
               window.location.href = '/api/checkout';
             }}
@@ -82,12 +82,6 @@ function CarritoLateral({
           >
             Finalizar Compra (Pagar)
           </button>
-            
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // Página Principal
 export default function Home() {
