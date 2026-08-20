@@ -73,8 +73,22 @@ function CarritoLateral({
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
           </div>
           <button 
-            onClick={() => {
-              window.location.href = '/api/checkout';
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/checkout', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ items: cart }),
+                });
+                const data = await response.json();
+                if (data.url) {
+                  window.location.href = data.url;
+                } else {
+                  alert(data.error || 'Hubo un error al crear la sesión de pago.');
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
             }}
             disabled={cart.length === 0}
             className={`w-full py-3 rounded-lg font-medium text-white transition ${
