@@ -7,7 +7,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 export async function POST(request: Request) {
   try {
-    const { items } = await request.json();
+    const body = await request.json();
+    const { items } = body;
 
     const transformedItems = items.map((item: any) => ({
       price_data: {
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (err: any) {
+    console.error('Error en Stripe:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
