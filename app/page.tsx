@@ -72,8 +72,26 @@ function CarritoLateral({
             <span>Total:</span>
             <span className="text-indigo-600">${totalPrice.toFixed(2)}</span>
           </div>
-          <button 
-            onClick={() => window.location.href = 'https://wa.me/34600123456'}
+ <button 
+            onClick={() => {
+              fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: cart }),
+              })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.url) {
+                    window.location.href = data.url;
+                  } else {
+                    alert("La pasarela de pago se activará una vez registradas las cuentas.");
+                  }
+                })
+                .catch(err => {
+                  console.error("Error:", err);
+                  alert("Configura tus datos en Stripe para procesar pagos reales.");
+                });
+            }}
             disabled={cart.length === 0}
             className={`w-full py-3 rounded-lg font-medium text-white transition ${
               cart.length === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
@@ -376,6 +394,5 @@ export default function Home() {
         cart={cart} 
         onRemoveFromCart={handleRemoveFromCart} 
       />
-    </div>
-  );
+</div>
 }
