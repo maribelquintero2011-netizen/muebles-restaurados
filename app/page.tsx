@@ -7,9 +7,9 @@ import { useState, useEffect } from 'react';
 // ==========================================
 interface Product {
   id: number;
-  title: string;
-  description: string;
-  fullDescription: string;
+  titleKey: 'prod1Title' | 'prod2Title';
+  descKey: 'prod1Desc' | 'prod2Desc';
+  fullDescKey: 'prod1Full' | 'prod2Full';
   price: number;
   category: string;
   images: string;
@@ -63,7 +63,13 @@ const translations: Record<string, Record<string, string>> = {
     role1: "Co-founder",
     desc1: "Specialist in cabinetry and detailed restoration of wooden pieces.",
     role2: "Co-founder",
-    desc2: "Architect focused on interior design and space aesthetics."
+    desc2: "Architect focused on interior design and space aesthetics.",
+    prod1Title: "Console",
+    prod1Desc: "Modern style console furniture, perfect for the hallway.",
+    prod1Full: "Minimalist straight-line console, made of wood.",
+    prod2Title: "Small Table",
+    prod2Desc: "Restored and painted wooden side table.",
+    prod2Full: "Exquisite side table carefully restored by hand."
   },
   es: {
     catalog: "Catálogo",
@@ -99,7 +105,13 @@ const translations: Record<string, Record<string, string>> = {
     role1: "Cofundador",
     desc1: "Especialista en ebanistería y restauración detallada de piezas de madera.",
     role2: "Cofundadora",
-    desc2: "Arquitecta enfocada en diseño de interiores y estética de espacios."
+    desc2: "Arquitecta enfocada en diseño de interiores y estética de espacios.",
+    prod1Title: "Consola",
+    prod1Desc: "Mueble consola de estilo moderno, perfecto para el recibidor.",
+    prod1Full: "Consola minimalista de líneas rectas, fabricada en madera.",
+    prod2Title: "Mesita",
+    prod2Desc: "Mesita auxiliar de madera restaurada y pintada.",
+    prod2Full: "Exquisita mesita auxiliar cuidadosamente restaurada a mano."
   }
 };
 
@@ -115,7 +127,7 @@ function CarritoLateral({
 }: { 
   isOpen: boolean; 
   onClose: () => void; 
-  cart: Product[]; 
+  cart: { id: number; title: string; price: number; images: string }[]; 
   onRemoveFromCart: (index: number) => void;
   t: Record<string, string>;
 }) {
@@ -194,7 +206,7 @@ export default function Home() {
   const [lang, setLang] = useState('es'); 
   const [activeSection, setActiveSection] = useState<string>('catalogo');
   const [selectedCategory, setSelectedCategory] = useState("TODO");
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart, setCart] = useState<{ id: number; title: string; price: number; images: string }[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -218,22 +230,21 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  // Nombres actualizados: "Consola" y "Mesita"
   const [products] = useState<Product[]>([
     {
       id: 1,
-      title: "Consola",
-      description: "Mueble consola de estilo moderno, perfecto para el recibidor.",
-      fullDescription: "Consola minimalista de líneas rectas, fabricada en madera.",
+      titleKey: "prod1Title",
+      descKey: "prod1Desc",
+      fullDescKey: "prod1Full",
       price: 120.00,
       category: "CONSOLAS",
       images: "/imagen1.jpg.jfif"
     },
     {
       id: 2,
-      title: "Mesita",
-      description: "Mesita auxiliar de madera restaurada y pintada.",
-      fullDescription: "Exquisita mesita auxiliar cuidadosamente restaurada a mano.",
+      titleKey: "prod2Title",
+      descKey: "prod2Desc",
+      fullDescKey: "prod2Full",
       price: 150.00,
       category: "MESA",
       images: "/imagen2.jpg.jfif"
@@ -257,7 +268,16 @@ export default function Home() {
     ? products 
     : products.filter(p => p.category === selectedCategory);
 
-  const handleAddToCart = (product: Product) => setCart(prev => [...prev, product]);
+  const handleAddToCart = (product: Product) => {
+    const translatedItem = {
+      id: product.id,
+      title: t[product.titleKey],
+      price: product.price,
+      images: product.images
+    };
+    setCart(prev => [...prev, translatedItem]);
+  };
+
   const handleRemoveFromCart = (indexToRemove: number) => setCart(prev => prev.filter((_, index) => index !== indexToRemove));
   
   const viewProductDetails = (product: Product) => {
@@ -321,13 +341,13 @@ export default function Home() {
             </button>
             <div className="grid md:grid-cols-2 gap-12 items-start">
               <div className="rounded-xl overflow-hidden shadow-md bg-gray-50 p-6 flex items-center justify-center border h-80">
-                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-full object-contain rounded-lg" />
+                <img src={selectedProduct.images} alt={t[selectedProduct.titleKey]} className="w-full h-full object-contain rounded-lg" />
               </div>
               <div>
                 <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
-                <h1 className="text-3xl font-bold text-gray-900 mt-2">{selectedProduct.title}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mt-2">{t[selectedProduct.titleKey]}</h1>
                 <p className="text-2xl font-bold text-indigo-600 mt-4">${selectedProduct.price.toFixed(2)}</p>
-                <p className="text-gray-600 mt-6 leading-relaxed">{selectedProduct.fullDescription}</p>
+                <p className="text-gray-600 mt-6 leading-relaxed">{t[selectedProduct.fullDescKey]}</p>
                 <button onClick={() => handleAddToCart(selectedProduct)} className="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition">
                   {t.addToCart}
                 </button>
@@ -352,9 +372,9 @@ export default function Home() {
                   {filteredProducts.map((product) => (
                     <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border p-6 flex flex-col justify-between">
                       <div className="h-64 overflow-hidden bg-gray-50 rounded-xl cursor-pointer p-4 flex items-center justify-center" onClick={() => viewProductDetails(product)}>
-                        <img src={product.images} alt={product.title} className="w-full h-full object-contain" />
+                        <img src={product.images} alt={t[product.titleKey]} className="w-full h-full object-contain" />
                       </div>
-                      <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer mt-4">{product.title}</h3>
+                      <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer mt-4">{t[product.titleKey]}</h3>
                       <p className="text-indigo-600 font-bold text-xl mt-2">${product.price.toFixed(2)}</p>
                       <button onClick={() => handleAddToCart(product)} className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-medium transition">{t.addToCart}</button>
                     </div>
