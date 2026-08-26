@@ -293,7 +293,7 @@ export default function Home() {
       {/* ========================================== */}
       <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
         <button onClick={() => navigateTo('catalogo')} className="flex items-center gap-3 font-bold text-lg text-blue-900">
-           <img src="/logo.jpg" alt="Logo" className="w-10 h-10 object-contain rounded-full" />
+           <img src="/logo.jpg" alt="Logo" className="w-10  h-10 object-contain rounded-full" />
            MARAVILLERÍA STUDIO
         </button>
 
