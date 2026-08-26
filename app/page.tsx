@@ -103,7 +103,7 @@ const translations: Record<string, Record<string, string>> = {
     rights: "Todos los derechos reservados.",
     socials: "Síguenos en nuestras redes sociales:",
     role1: "Cofundador",
-    desc1: "Especialista en ebanistería y restauración detallada de piezas de madera.",
+    desc1: "Arquitecta Especialista en ebanistería y restauración detallada de piezas de madera.",
     role2: "Cofundadora",
     desc2: "Arquitecta enfocada en diseño de interiores y estética de espacios.",
     prod1Title: "Consola",
