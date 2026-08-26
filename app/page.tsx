@@ -80,7 +80,7 @@ const translations: Record<string, Record<string, string>> = {
     cart: "Carrito",
     all: "TODO",
     consoles: "CONSOLAS",
-    table: "MESA",
+    table: "MESAS",
     backToCatalog: "← Volver al catálogo",
     viewDetails: "Ver Detalles",
     addToCart: "Añadir a la cesta",
@@ -246,7 +246,7 @@ export default function Home() {
       descKey: "prod2Desc",
       fullDescKey: "prod2Full",
       price: 150.00,
-      category: "MESA",
+      category: "MESAS",
       images: "/imagen2.jpg.jfif"
     }
   ]);
@@ -383,7 +383,7 @@ export default function Home() {
                 <div className="text-center mb-10">
                   <h2 className="text-3xl font-bold text-gray-900">{t.catalog}</h2>
                   <div className="flex justify-center gap-2 mt-6">
-                    {["TODO", "CONSOLAS", "MESA"].map((category) => (
+                    {["TODO", "CONSOLAS", "MESAS"].map((category) => (
                       <button key={category} onClick={() => setSelectedCategory(category)} className={`px-5 py-2 rounded-full text-sm font-medium transition ${selectedCategory === category ? "bg-indigo-600 text-white" : "bg-white text-gray-600 border"}`}>
                         {category === "TODO" ? t.all : category === "CONSOLAS" ? t.consoles : t.table}
                       </button>
