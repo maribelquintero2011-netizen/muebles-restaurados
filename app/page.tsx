@@ -34,13 +34,12 @@ const translations: Record<string, Record<string, string>> = {
     aboutUs: "About Us",
     warehouse: "Warehouse",
     reviews: "Reviews",
-    suggestions: "Suggestions",
-    services: "Restoration & Orders",
+    services: "Requests restorations",
     contact: "Contact",
     cart: "Cart",
-    all: "All",
-    chairs: "Chairs",
-    tables: "Tables",
+    all: "ALL",
+    consoles: "CONSOLES",
+    table: "TABLE",
     backToCatalog: "← Back to catalog",
     viewDetails: "View Details",
     addToCart: "Add to cart",
@@ -59,8 +58,8 @@ const translations: Record<string, Record<string, string>> = {
     veryBad: "★☆☆☆☆ (Very bad)",
     yourComment: "Your Comment",
     publishReview: "Publish Review",
-    requestsTitle: "Requests and Restorations",
-    requestsDesc: "Do you want to restore your own furniture or request a custom design?",
+    requestsTitle: "Requests restorations",
+    requestsDesc: "Would you like to restore your own furniture or request a custom design?",
     requestSuccess: "Request sent successfully! We will contact you soon.",
     email: "Email",
     serviceType: "Service Type",
@@ -74,28 +73,27 @@ const translations: Record<string, Record<string, string>> = {
     phone: "Phone / WhatsApp: +1 (555) 123-4567",
     rights: "All rights reserved.",
     warehouseDesc: "Current stock management and inventory available in the workshop.",
-    suggestionsDesc: "Send us your ideas or improvement proposals for the studio.",
+    socials: "Follow us on our social media:"
   },
   es: {
     catalog: "Catálogo",
     aboutUs: "Quiénes somos",
     warehouse: "Almacén",
     reviews: "Opiniones",
-    suggestions: "Sugerencias",
-    services: "Restauración y Pedidos",
+    services: "Solicitudes restauraciones",
     contact: "Contacto",
     cart: "Carrito",
-    all: "Todos",
-    chairs: "Sillas",
-    tables: "Mesas",
+    all: "TODO",
+    consoles: "CONSOLAS",
+    table: "MESA",
     backToCatalog: "← Volver al catálogo",
     viewDetails: "Ver Detalles",
-    addToCart: "Añadir al carrito",
+    addToCart: "Añadir a la cesta",
     total: "Total:",
     checkout: "Finalizar Compra (Pagar)",
     emptyCart: "Tu carrito está vacío.",
     customerReviews: "Opiniones de Clientes",
-    shareExperience: "Comparte tu experiencia (positiva o negativa) sobre nuestros productos.",
+    shareExperience: "Comparte tu experiencia sobre nuestros productos.",
     leaveReview: "Déjanos tu opinión",
     yourName: "Tu Nombre",
     rating: "Calificación",
@@ -106,9 +104,9 @@ const translations: Record<string, Record<string, string>> = {
     veryBad: "★☆☆☆☆ (Muy malo)",
     yourComment: "Tu Comentario",
     publishReview: "Publicar Opinión",
-    requestsTitle: "Solicitudes y Restauraciones",
-    requestsDesc: "¿Quieres mandar a restaurar un mueble propio o solicitar un diseño específico a medida?",
-    requestSuccess: "¡Solicitud enviada con éxito! Nos pondremos en contacto contigo para coordinar los detalles.",
+    requestsTitle: "Solicitudes restauraciones",
+    requestsDesc: "¿Desea restaurar sus propios muebles o solicitar un diseño personalizado?",
+    requestSuccess: "¡Solicitud enviada con éxito! Nos pondremos en contacto contigo.",
     email: "Correo electrónico",
     serviceType: "Tipo de Servicio",
     restoreOwn: "Restauración de un mueble propio",
@@ -121,7 +119,7 @@ const translations: Record<string, Record<string, string>> = {
     phone: "Teléfono / WhatsApp: +1 (555) 123-4567",
     rights: "Todos los derechos reservados.",
     warehouseDesc: "Gestión de stock e inventario actual de muebles disponibles en taller.",
-    suggestionsDesc: "Envíanos tus ideas o propuestas de mejora para el estudio.",
+    socials: "Síguenos en nuestras redes sociales:"
   }
 };
 
@@ -160,7 +158,7 @@ function CarritoLateral({
             cart.map((item, index) => (
               <div key={index} className="flex items-center justify-between border-b pb-3">
                 <div className="flex items-center gap-3">
-                  <img src={item.images} alt={item.title} className="w-16 h-16 object-contain rounded-md bg-gray-50" />
+                  <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center text-xs text-gray-500">[Img]</div>
                   <div>
                     <h4 className="font-medium text-sm text-gray-800">{item.title}</h4>
                     <p className="text-indigo-600 font-semibold text-sm">${item.price.toFixed(2)}</p>
@@ -213,20 +211,16 @@ function CarritoLateral({
 // BLOQUE 2: COMPONENTE PRINCIPAL (HOME)
 // ==========================================
 export default function Home() {
-  const [lang, setLang] = useState('en'); // Inglés por defecto
+  const [lang, setLang] = useState('es'); 
   const [activeSection, setActiveSection] = useState<string>('catalogo');
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedCategory, setSelectedCategory] = useState("TODO");
   const [cart, setCart] = useState<Product[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Inicializar idioma predeterminado en inglés o recuperar preferencia
   useEffect(() => {
     const savedLang = localStorage.getItem('site_lang');
-    if (!savedLang) {
-      localStorage.setItem('site_lang', 'en');
-      setLang('en');
-    } else {
+    if (savedLang) {
       setLang(savedLang);
     }
   }, []);
@@ -236,7 +230,7 @@ export default function Home() {
     localStorage.setItem('site_lang', newLang);
   };
 
-  const t = translations[lang] || translations.en;
+  const t = translations[lang] || translations.es;
 
   const navigateTo = (section: string) => {
     setSelectedProduct(null);
@@ -251,7 +245,7 @@ export default function Home() {
       description: "Silla de madera de haya restaurada y tapizada.",
       fullDescription: "Esta exquisita silla estilo Luis XV ha sido cuidadosamente restaurada a mano.",
       price: 120.00,
-      category: "Sillas",
+      category: "CONSOLAS",
       images: "/imagen1.jpg.jfif"
     },
     {
@@ -260,14 +254,14 @@ export default function Home() {
       description: "Mueble consola de estilo moderno, perfecto para el recibidor.",
       fullDescription: "Consola minimalista de líneas rectas, fabricada en madera de roble macizo.",
       price: 150.00,
-      category: "Mesas",
+      category: "MESA",
       images: "imagen2.jpg.jfif"
     }
   ]);
 
   const partners: Partner[] = [
-    { name: "Emil Carrasquel", role: "Co-fundador", description: "Especialista en ebanistería.", image: "/emil.jpg" },
-    { name: "Federica Delcuratolo", role: "Co-fundadora", description: "Arquitecta enfocada en diseño.", image: "/federica.jpg" }
+    { name: "Emil Carrasquel", role: "Cofundador", description: "Especialista en ebanistería y restauración detallada de piezas de madera.", image: "/emil.jpg" },
+    { name: "Federica Delcuratolo", role: "Cofundadora", description: "Arquitecta enfocada en diseño de interiores y estética de espacios.", image: "/federica.jpg" }
   ];
 
   const [reviews, setReviews] = useState<Review[]>([
@@ -278,7 +272,7 @@ export default function Home() {
   const [requestForm, setRequestForm] = useState({ name: '', email: '', type: 'Restauración', message: '' });
   const [requestSubmitted, setRequestSubmitted] = useState(false);
 
-  const filteredProducts = selectedCategory === "Todos" 
+  const filteredProducts = selectedCategory === "TODO" 
     ? products 
     : products.filter(p => p.category === selectedCategory);
 
@@ -297,18 +291,16 @@ export default function Home() {
       {/* BLOQUE 3: CABECERA Y SELECTOR DE IDIOMA     */}
       {/* ========================================== */}
       <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
-        <button onClick={() => navigateTo('catalogo')} className="flex items-center gap-2">
-           <img src="/logo.jpg" alt="Logo" className="h-16 w-auto object-contain" />
+        <button onClick={() => navigateTo('catalogo')} className="flex items-center gap-2 font-bold text-lg text-blue-900">
+           MARAVILLERÍA STUDIO
         </button>
 
         <div className="flex items-center gap-6">
-          {/* Navegación por clics fijos sin scroll */}
           <nav className="hidden md:flex items-center gap-2">
             <button onClick={() => navigateTo('catalogo')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'catalogo' && !selectedProduct ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.catalog}</button>
             <button onClick={() => navigateTo('quienes-somos')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'quienes-somos' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.aboutUs}</button>
             <button onClick={() => navigateTo('almacen')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'almacen' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.warehouse}</button>
             <button onClick={() => navigateTo('comentarios')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'comentarios' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.reviews}</button>
-            <button onClick={() => navigateTo('sugerencias')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'sugerencias' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.suggestions}</button>
             <button onClick={() => navigateTo('solicitudes')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'solicitudes' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.services}</button>
             <button onClick={() => navigateTo('contacto')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'contacto' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.contact}</button>
           </nav>
@@ -348,8 +340,8 @@ export default function Home() {
               {t.backToCatalog}
             </button>
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div className="rounded-xl overflow-hidden shadow-md bg-gray-50 p-6 flex items-center justify-center border">
-                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-80 object-contain rounded-lg" />
+              <div className="rounded-xl overflow-hidden shadow-md bg-gray-50 p-6 flex items-center justify-center border h-80">
+                <span className="text-gray-400">[ Vista de Producto ]</span>
               </div>
               <div>
                 <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
@@ -369,22 +361,22 @@ export default function Home() {
                 <div className="text-center mb-10">
                   <h2 className="text-3xl font-bold text-gray-900">{t.catalog}</h2>
                   <div className="flex justify-center gap-2 mt-6">
-                    {["Todos", "Sillas", "Mesas"].map((category) => (
+                    {["TODO", "CONSOLAS", "MESA"].map((category) => (
                       <button key={category} onClick={() => setSelectedCategory(category)} className={`px-5 py-2 rounded-full text-sm font-medium transition ${selectedCategory === category ? "bg-indigo-600 text-white" : "bg-white text-gray-600 border"}`}>
-                        {category === "Todos" ? t.all : category === "Sillas" ? t.chairs : t.tables}
+                        {category === "TODO" ? t.all : category === "CONSOLAS" ? t.consoles : t.table}
                       </button>
                     ))}
                   </div>
                 </div>
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                   {filteredProducts.map((product) => (
                     <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border p-6 flex flex-col justify-between">
-                      <div className="h-64 overflow-hidden bg-gray-50 cursor-pointer p-4 flex items-center justify-center" onClick={() => viewProductDetails(product)}>
-                        <img src={product.images} alt={product.title} className="w-full h-full object-contain" />
+                      <div className="h-64 overflow-hidden bg-gray-100 rounded-xl cursor-pointer p-4 flex items-center justify-center text-gray-400" onClick={() => viewProductDetails(product)}>
+                        <span>[ Imagen de Mueble ]</span>
                       </div>
                       <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer mt-4">{product.title}</h3>
                       <p className="text-indigo-600 font-bold text-xl mt-2">${product.price.toFixed(2)}</p>
-                      <button onClick={() => handleAddToCart(product)} className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-xl font-medium">{t.addToCart}</button>
+                      <button onClick={() => handleAddToCart(product)} className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-medium transition">{t.addToCart}</button>
                     </div>
                   ))}
                 </div>
@@ -396,8 +388,8 @@ export default function Home() {
                 <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">{t.aboutUs}</h2>
                 <div className="grid md:grid-cols-2 gap-10">
                   {partners.map((partner, index) => (
-                    <div key={index} className="flex flex-col items-center text-center p-6 border rounded-2xl">
-                      <img src={partner.image} alt={partner.name} className="w-32 h-32 rounded-full object-cover mb-4" />
+                    <div key={index} className="flex flex-col items-center text-center p-6 border rounded-2xl bg-gray-50">
+                      <div className="w-32 h-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-gray-400">[ Foto ]</div>
                       <h3 className="text-xl font-bold text-gray-900">{partner.name}</h3>
                       <p className="text-indigo-600 font-medium text-sm">{partner.role}</p>
                       <p className="text-gray-600 text-sm mt-3">{partner.description}</p>
@@ -408,16 +400,16 @@ export default function Home() {
             )}
 
             {activeSection === 'almacen' && (
-              <section className="bg-white rounded-2xl p-8 shadow-sm mb-16 text-center">
+              <section className="bg-white rounded-2xl p-8 shadow-sm mb-16 text-center max-w-2xl mx-auto">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.warehouse}</h2>
                 <p className="text-gray-600">{t.warehouseDesc}</p>
               </section>
             )}
 
             {activeSection === 'comentarios' && (
-              <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border">
+              <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border max-w-3xl mx-auto">
                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">{t.customerReviews}</h2>
-                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <div className="space-y-4 mb-10">
                   {reviews.map((rev, idx) => (
                     <div key={idx} className="p-6 bg-gray-50 rounded-xl border">
                       <p className="italic text-gray-700 mb-2">"{rev.comment}"</p>
@@ -425,13 +417,34 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              </section>
-            )}
 
-            {activeSection === 'sugerencias' && (
-              <section className="bg-white rounded-2xl p-8 shadow-sm mb-16 max-w-xl mx-auto text-center">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.suggestions}</h2>
-                <p className="text-gray-600 mb-4">{t.suggestionsDesc}</p>
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!newReview.name || !newReview.comment) return;
+                  setReviews([...reviews, newReview]);
+                  setNewReview({ name: '', comment: '', rating: 5 });
+                }} className="border-t pt-6 space-y-4">
+                  <h3 className="text-lg font-bold text-gray-800">{t.leaveReview}</h3>
+                  <input 
+                    type="text" 
+                    placeholder={t.yourName} 
+                    value={newReview.name} 
+                    onChange={e => setNewReview({...newReview, name: e.target.value})} 
+                    className="w-full border p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-600" 
+                    required 
+                  />
+                  <textarea 
+                    placeholder={t.yourComment} 
+                    rows={3}
+                    value={newReview.comment} 
+                    onChange={e => setNewReview({...newReview, comment: e.target.value})} 
+                    className="w-full border p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-600" 
+                    required 
+                  />
+                  <button type="submit" className="bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition">
+                    {t.publishReview}
+                  </button>
+                </form>
               </section>
             )}
 
@@ -441,18 +454,27 @@ export default function Home() {
                 <p className="text-center text-gray-600 mb-6">{t.requestsDesc}</p>
                 <form onSubmit={(e) => { e.preventDefault(); setRequestSubmitted(true); }} className="space-y-4">
                   {requestSubmitted && <div className="p-3 bg-green-50 text-green-700 rounded-lg text-center">{t.requestSuccess}</div>}
-                  <input type="text" placeholder={t.yourName} required value={requestForm.name} onChange={e => setRequestForm({...requestForm, name: e.target.value})} className="w-full border p-2.5 rounded-xl" />
-                  <input type="email" placeholder={t.email} required value={requestForm.email} onChange={e => setRequestForm({...requestForm, email: e.target.value})} className="w-full border p-2.5 rounded-xl" />
-                  <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium">{t.sendRequest}</button>
+                  <input type="text" placeholder={t.yourName} required value={requestForm.name} onChange={e => setRequestForm({...requestForm, name: e.target.value})} className="w-full border p-3 rounded-xl outline-none" />
+                  <input type="email" placeholder={t.email} required value={requestForm.email} onChange={e => setRequestForm({...requestForm, email: e.target.value})} className="w-full border p-3 rounded-xl outline-none" />
+                  <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold transition hover:bg-indigo-700">{t.sendRequest}</button>
                 </form>
               </section>
             )}
 
             {activeSection === 'contacto' && (
-              <section className="bg-white rounded-2xl p-8 shadow-sm border max-w-2xl mx-auto text-center mb-16">
+              <section className="bg-white rounded-2xl p-8 shadow-sm border max-w-3xl mx-auto text-center mb-16">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.contactLocation}</h2>
-                <p className="text-gray-600 mb-2"><strong>{t.address}</strong></p>
-                <p className="text-gray-600 mb-2"><strong>{t.phone}</strong></p>
+                <p className="text-gray-700 mb-2"><strong>{t.address}</strong></p>
+                <p className="text-gray-700 mb-6"><strong>{t.phone}</strong></p>
+                
+                <div className="border-t pt-6">
+                  <p className="font-semibold mb-4 text-gray-800">{t.socials}</p>
+                  <div className="flex justify-center gap-6 font-bold text-indigo-600">
+                    <a href="#" className="hover:underline">Instagram</a>
+                    <a href="#" className="hover:underline">Facebook</a>
+                    <a href="#" className="hover:underline">WhatsApp</a>
+                  </div>
+                </div>
               </section>
             )}
           </>
@@ -460,7 +482,7 @@ export default function Home() {
       </main>
 
       {/* ========================================== */}
-      {/* BLOQUE 5: PIE DE PÁGINA                    */}
+      {/* BLOQUE 5: PIE DE PÁGINA                     */}
       {/* ========================================== */}
       <footer className="bg-white border-t py-8 text-center text-sm text-gray-500">
         <p>&copy; {new Date().getFullYear()} Muebles Restaurados. {t.rights}</p>
