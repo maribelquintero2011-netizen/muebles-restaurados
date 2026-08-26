@@ -256,7 +256,6 @@ export default function Home() {
     { name: "Federica Delcuratolo", roleKey: "role2", descKey: "desc2", image: "/federica.jpg" }
   ];
 
-  // Reseñas con persistencia en localStorage
   const [reviews, setReviews] = useState<Review[]>(() => {
     if (typeof window !== 'undefined') {
       const savedReviews = localStorage.getItem('maravilleria_reviews');
@@ -340,11 +339,15 @@ export default function Home() {
             </button>
           </div>
 
+          {/* Botón de Carrito con Icono */}
           <button 
             onClick={() => setIsCartOpen(true)}
             className="flex items-center gap-2 bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-100 transition relative"
           >
-            <span>{t.cart} ({cart.length})</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>({cart.length})</span>
           </button>
         </div>
       </header>
@@ -422,7 +425,6 @@ export default function Home() {
               <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border max-w-3xl mx-auto">
                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">{t.customerReviews}</h2>
                 
-                {/* Listado de opiniones con estrellas */}
                 <div className="space-y-4 mb-10">
                   {reviews.map((rev, idx) => (
                     <div key={idx} className="p-6 bg-gray-50 rounded-xl border">
@@ -437,7 +439,6 @@ export default function Home() {
                   ))}
                 </div>
 
-                {/* Formulario con selector de estrellas */}
                 <form onSubmit={(e) => {
                   e.preventDefault();
                   if (!newReview.name || !newReview.comment) return;
@@ -455,7 +456,6 @@ export default function Home() {
                     required 
                   />
 
-                  {/* Selector de Estrellas */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Calificación</label>
                     <select 
