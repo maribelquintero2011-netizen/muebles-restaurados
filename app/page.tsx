@@ -218,11 +218,11 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  // Productos corregidos con sus nombres correctos asignados a cada imagen
+  // Nombres actualizados: "Consola" y "Mesita"
   const [products] = useState<Product[]>([
     {
       id: 1,
-      title: "Consola de entrada",
+      title: "Consola",
       description: "Mueble consola de estilo moderno, perfecto para el recibidor.",
       fullDescription: "Consola minimalista de líneas rectas, fabricada en madera.",
       price: 120.00,
@@ -231,9 +231,9 @@ export default function Home() {
     },
     {
       id: 2,
-      title: "Silla Luis XV Restaurada",
-      description: "Silla de madera de haya restaurada y tapizada.",
-      fullDescription: "Esta exquisita silla estilo Luis XV ha sido cuidadosamente restaurada a mano.",
+      title: "Mesita",
+      description: "Mesita auxiliar de madera restaurada y pintada.",
+      fullDescription: "Exquisita mesita auxiliar cuidadosamente restaurada a mano.",
       price: 150.00,
       category: "MESA",
       images: "/imagen2.jpg.jfif"
