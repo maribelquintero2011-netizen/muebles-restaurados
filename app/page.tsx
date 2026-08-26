@@ -291,9 +291,9 @@ export default function Home() {
       {/* ========================================== */}
       {/* BLOQUE 3: CABECERA Y SELECTOR DE IDIOMA     */}
       {/* ========================================== */}
-      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
-        <button onClick={() => navigateTo('catalogo')} className="flex items-center focus:outline-none">
-           <img src="/logo.jpg" alt="Logo" className="w-26 h-26 object-contain rounded-full" />
+      <<header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
+        <button onClick={() => navigateTo('catalogo')} className="flex items-center justify-center focus:outline-none">
+           <img src="/logo.jpg" alt="Logo" style={{ width: '140px', height: 'auto' }} className="object-contain" />
         </button>
 
         <div className="flex items-center gap-6">
