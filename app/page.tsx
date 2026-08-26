@@ -38,7 +38,7 @@ const translations: Record<string, Record<string, string>> = {
     cart: "Cart",
     all: "ALL",
     consoles: "CONSOLES",
-    table: "TABLE",
+    table: "TABLES",
     backToCatalog: "← Back to catalog",
     viewDetails: "View Details",
     addToCart: "Add to cart",
@@ -218,21 +218,22 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  // Productos corregidos con sus nombres correctos asignados a cada imagen
   const [products] = useState<Product[]>([
     {
       id: 1,
-      title: "Silla Luis XV Restaurada",
-      description: "Silla de madera de haya restaurada y tapizada.",
-      fullDescription: "Esta exquisita silla estilo Luis XV ha sido cuidadosamente restaurada a mano.",
+      title: "Consola de entrada",
+      description: "Mueble consola de estilo moderno, perfecto para el recibidor.",
+      fullDescription: "Consola minimalista de líneas rectas, fabricada en madera.",
       price: 120.00,
       category: "CONSOLAS",
       images: "/imagen1.jpg.jfif"
     },
     {
       id: 2,
-      title: "Consola de entrada",
-      description: "Mueble consola de estilo moderno, perfecto para el recibidor.",
-      fullDescription: "Consola minimalista de líneas rectas, fabricada en madera de roble macizo.",
+      title: "Silla Luis XV Restaurada",
+      description: "Silla de madera de haya restaurada y tapizada.",
+      fullDescription: "Esta exquisita silla estilo Luis XV ha sido cuidadosamente restaurada a mano.",
       price: 150.00,
       category: "MESA",
       images: "/imagen2.jpg.jfif"
