@@ -46,7 +46,7 @@ const translations: Record<string, Record<string, string>> = {
     checkout: "Proceed to Checkout",
     emptyCart: "Your cart is empty.",
     customerReviews: "Customer Reviews",
-    leaveReview: "Leave a Review",
+    leaveReview: "Leave a Review and Rating",
     yourName: "Your Name",
     yourComment: "Your Comment",
     publishReview: "Publish Review",
@@ -88,7 +88,7 @@ const translations: Record<string, Record<string, string>> = {
     checkout: "Finalizar Compra (Pagar)",
     emptyCart: "Tu carrito está vacío.",
     customerReviews: "Opiniones de Clientes",
-    leaveReview: "Déjanos tu opinión",
+    leaveReview: "Déjanos tu opinión y calificación",
     yourName: "Tu Nombre",
     yourComment: "Tu Comentario",
     publishReview: "Publicar Opinión",
@@ -256,9 +256,28 @@ export default function Home() {
     { name: "Federica Delcuratolo", roleKey: "role2", descKey: "desc2", image: "/federica.jpg" }
   ];
 
-  const [reviews, setReviews] = useState<Review[]>([
-    { name: "Sofía Martínez", comment: "Excelente calidad en cada detalle.", rating: 5 }
-  ]);
+  // Reseñas con persistencia en localStorage
+  const [reviews, setReviews] = useState<Review[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedReviews = localStorage.getItem('maravilleria_reviews');
+      if (savedReviews) {
+        try {
+          return JSON.parse(savedReviews);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    return [
+      { name: "Sofía Martínez", comment: "Excelente calidad en cada detalle.", rating: 5 }
+    ];
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('maravilleria_reviews', JSON.stringify(reviews));
+    }
+  }, [reviews]);
 
   const [newReview, setNewReview] = useState({ name: '', comment: '', rating: 5 });
   const [requestForm, setRequestForm] = useState({ name: '', email: '', type: 'Restauración', message: '' });
@@ -329,6 +348,7 @@ export default function Home() {
           </button>
         </div>
       </header>
+
       {/* ========================================== */}
       {/* BLOQUE 4: CONTENIDO DINÁMICO POR CLICS     */}
       {/* ========================================== */}
@@ -401,22 +421,31 @@ export default function Home() {
             {activeSection === 'comentarios' && (
               <section className="my-16 bg-white p-8 rounded-2xl shadow-sm border max-w-3xl mx-auto">
                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">{t.customerReviews}</h2>
+                
+                {/* Listado de opiniones con estrellas */}
                 <div className="space-y-4 mb-10">
                   {reviews.map((rev, idx) => (
                     <div key={idx} className="p-6 bg-gray-50 rounded-xl border">
-                      <p className="italic text-gray-700 mb-2">"{rev.comment}"</p>
-                      <p className="font-bold text-sm">— {rev.name}</p>
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="font-bold text-sm text-gray-900">— {rev.name}</p>
+                        <span className="text-yellow-500 text-sm">
+                          {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+                        </span>
+                      </div>
+                      <p className="italic text-gray-700">"{rev.comment}"</p>
                     </div>
                   ))}
                 </div>
 
+                {/* Formulario con selector de estrellas */}
                 <form onSubmit={(e) => {
                   e.preventDefault();
                   if (!newReview.name || !newReview.comment) return;
-                  setReviews([...reviews, newReview]);
+                  setReviews([newReview, ...reviews]);
                   setNewReview({ name: '', comment: '', rating: 5 });
                 }} className="border-t pt-6 space-y-4">
                   <h3 className="text-lg font-bold text-gray-800">{t.leaveReview}</h3>
+                  
                   <input 
                     type="text" 
                     placeholder={t.yourName} 
@@ -425,6 +454,23 @@ export default function Home() {
                     className="w-full border p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-600" 
                     required 
                   />
+
+                  {/* Selector de Estrellas */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Calificación</label>
+                    <select 
+                      value={newReview.rating} 
+                      onChange={e => setNewReview({...newReview, rating: Number(e.target.value)})}
+                      className="w-full border p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-600 bg-white"
+                    >
+                      <option value={5}>⭐⭐⭐⭐⭐ (5 - Excelente)</option>
+                      <option value={4}>⭐⭐⭐⭐ (4 - Muy bueno)</option>
+                      <option value={3}>⭐⭐⭐ (3 - Bueno)</option>
+                      <option value={2}>⭐⭐ (2 - Regular)</option>
+                      <option value={1}>⭐ (1 - Malo)</option>
+                    </select>
+                  </div>
+
                   <textarea 
                     placeholder={t.yourComment} 
                     rows={3}
@@ -433,6 +479,7 @@ export default function Home() {
                     className="w-full border p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-600" 
                     required 
                   />
+
                   <button type="submit" className="bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition">
                     {t.publishReview}
                   </button>
@@ -474,7 +521,7 @@ export default function Home() {
       </main>
 
       {/* ========================================== */}
-      {/* BLOQUE 5: PIE DE PÁGINA                     */}
+      {/* BLOQUE 5: PIE DE PÁGINA                    */}
       {/* ========================================== */}
       <footer className="bg-white border-t py-8 text-center text-sm text-gray-500">
         <p>&copy; {new Date().getFullYear()} Muebles Restaurados. {t.rights}</p>
