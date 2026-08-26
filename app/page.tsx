@@ -291,7 +291,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* BLOQUE 3: CABECERA Y LOGO                  */}
       {/* ========================================== */}
-      <header className=<header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
+      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
         <button onClick={() => navigateTo('catalogo')} className="flex items-center justify-center focus:outline-none">
            <img src="/logo.jpg" alt="Logo" style={{ width: '250px', height: '80px' }} className="object-contain" />
         </button>
@@ -329,7 +329,6 @@ export default function Home() {
           </button>
         </div>
       </header>
-
       {/* ========================================== */}
       {/* BLOQUE 4: CONTENIDO DINÁMICO POR CLICS     */}
       {/* ========================================== */}
