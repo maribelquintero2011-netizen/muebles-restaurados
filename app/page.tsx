@@ -17,8 +17,8 @@ interface Product {
 
 interface Partner {
   name: string;
-  role: string;
-  description: string;
+  roleKey: 'role1' | 'role2';
+  descKey: 'desc1' | 'desc2';
   image: string;
 }
 
@@ -32,7 +32,6 @@ const translations: Record<string, Record<string, string>> = {
   en: {
     catalog: "Catalog",
     aboutUs: "About Us",
-    warehouse: "Warehouse",
     reviews: "Reviews",
     services: "Requests restorations",
     contact: "Contact",
@@ -47,38 +46,28 @@ const translations: Record<string, Record<string, string>> = {
     checkout: "Proceed to Checkout",
     emptyCart: "Your cart is empty.",
     customerReviews: "Customer Reviews",
-    shareExperience: "Share your experience about our products.",
     leaveReview: "Leave a Review",
     yourName: "Your Name",
-    rating: "Rating",
-    excellent: "★★★★★ (Excellent)",
-    veryGood: "★★★★☆ (Very good)",
-    regular: "★★★☆☆ (Regular)",
-    bad: "★★☆☆☆ (Bad)",
-    veryBad: "★☆☆☆☆ (Very bad)",
     yourComment: "Your Comment",
     publishReview: "Publish Review",
     requestsTitle: "Requests restorations",
     requestsDesc: "Would you like to restore your own furniture or request a custom design?",
     requestSuccess: "Request sent successfully! We will contact you soon.",
     email: "Email",
-    serviceType: "Service Type",
-    restoreOwn: "Restore own furniture",
-    customFurniture: "Request custom furniture",
-    detailsText: "Tell us the details",
     sendRequest: "Send Request",
     contactLocation: "Contact & Location",
-    contactDesc: "Find us or contact our studio directly.",
     address: "Studio Address: Main Woodworking Street #123, City",
     phone: "Phone / WhatsApp: +1 (555) 123-4567",
     rights: "All rights reserved.",
-    warehouseDesc: "Current stock management and inventory available in the workshop.",
-    socials: "Follow us on our social media:"
+    socials: "Follow us on our social media:",
+    role1: "Co-founder",
+    desc1: "Specialist in cabinetry and detailed restoration of wooden pieces.",
+    role2: "Co-founder",
+    desc2: "Architect focused on interior design and space aesthetics."
   },
   es: {
     catalog: "Catálogo",
     aboutUs: "Quiénes somos",
-    warehouse: "Almacén",
     reviews: "Opiniones",
     services: "Solicitudes restauraciones",
     contact: "Contacto",
@@ -93,33 +82,24 @@ const translations: Record<string, Record<string, string>> = {
     checkout: "Finalizar Compra (Pagar)",
     emptyCart: "Tu carrito está vacío.",
     customerReviews: "Opiniones de Clientes",
-    shareExperience: "Comparte tu experiencia sobre nuestros productos.",
     leaveReview: "Déjanos tu opinión",
     yourName: "Tu Nombre",
-    rating: "Calificación",
-    excellent: "★★★★★ (Excelente)",
-    veryGood: "★★★★☆ (Muy bueno)",
-    regular: "★★★☆☆ (Regular)",
-    bad: "★★☆☆☆ (Malo)",
-    veryBad: "★☆☆☆☆ (Muy malo)",
     yourComment: "Tu Comentario",
     publishReview: "Publicar Opinión",
     requestsTitle: "Solicitudes restauraciones",
     requestsDesc: "¿Desea restaurar sus propios muebles o solicitar un diseño personalizado?",
     requestSuccess: "¡Solicitud enviada con éxito! Nos pondremos en contacto contigo.",
     email: "Correo electrónico",
-    serviceType: "Tipo de Servicio",
-    restoreOwn: "Restauración de un mueble propio",
-    customFurniture: "Solicitar un mueble personalizado / a medida",
-    detailsText: "Cuéntanos los detalles",
     sendRequest: "Enviar Solicitud",
     contactLocation: "Contacto y Ubicación",
-    contactDesc: "Encuéntranos o comunícate directamente con nuestro estudio.",
     address: "Dirección del Estudio: Calle Principal de Ebanistería #123, Ciudad",
     phone: "Teléfono / WhatsApp: +1 (555) 123-4567",
     rights: "Todos los derechos reservados.",
-    warehouseDesc: "Gestión de stock e inventario actual de muebles disponibles en taller.",
-    socials: "Síguenos en nuestras redes sociales:"
+    socials: "Síguenos en nuestras redes sociales:",
+    role1: "Cofundador",
+    desc1: "Especialista en ebanistería y restauración detallada de piezas de madera.",
+    role2: "Cofundadora",
+    desc2: "Arquitecta enfocada en diseño de interiores y estética de espacios."
   }
 };
 
@@ -158,7 +138,7 @@ function CarritoLateral({
             cart.map((item, index) => (
               <div key={index} className="flex items-center justify-between border-b pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center text-xs text-gray-500">[Img]</div>
+                  <img src={item.images} alt={item.title} className="w-16 h-16 object-cover rounded-md bg-gray-50" />
                   <div>
                     <h4 className="font-medium text-sm text-gray-800">{item.title}</h4>
                     <p className="text-indigo-600 font-semibold text-sm">${item.price.toFixed(2)}</p>
@@ -255,13 +235,13 @@ export default function Home() {
       fullDescription: "Consola minimalista de líneas rectas, fabricada en madera de roble macizo.",
       price: 150.00,
       category: "MESA",
-      images: "imagen2.jpg.jfif"
+      images: "/imagen2.jpg.jfif"
     }
   ]);
 
   const partners: Partner[] = [
-    { name: "Emil Carrasquel", role: "Cofundador", description: "Especialista en ebanistería y restauración detallada de piezas de madera.", image: "/emil.jpg" },
-    { name: "Federica Delcuratolo", role: "Cofundadora", description: "Arquitecta enfocada en diseño de interiores y estética de espacios.", image: "/federica.jpg" }
+    { name: "Emil Carrasquel", roleKey: "role1", descKey: "desc1", image: "/emil.jpg" },
+    { name: "Federica Delcuratolo", roleKey: "role2", descKey: "desc2", image: "/federica.jpg" }
   ];
 
   const [reviews, setReviews] = useState<Review[]>([
@@ -299,7 +279,6 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-2">
             <button onClick={() => navigateTo('catalogo')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'catalogo' && !selectedProduct ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.catalog}</button>
             <button onClick={() => navigateTo('quienes-somos')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'quienes-somos' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.aboutUs}</button>
-            <button onClick={() => navigateTo('almacen')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'almacen' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.warehouse}</button>
             <button onClick={() => navigateTo('comentarios')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'comentarios' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.reviews}</button>
             <button onClick={() => navigateTo('solicitudes')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'solicitudes' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.services}</button>
             <button onClick={() => navigateTo('contacto')} className={`text-sm font-medium px-3 py-1.5 rounded-lg transition ${activeSection === 'contacto' ? 'bg-indigo-50 text-indigo-600 font-bold' : 'text-gray-600 hover:text-indigo-600'}`}>{t.contact}</button>
@@ -341,7 +320,7 @@ export default function Home() {
             </button>
             <div className="grid md:grid-cols-2 gap-12 items-start">
               <div className="rounded-xl overflow-hidden shadow-md bg-gray-50 p-6 flex items-center justify-center border h-80">
-                <span className="text-gray-400">[ Vista de Producto ]</span>
+                <img src={selectedProduct.images} alt={selectedProduct.title} className="w-full h-full object-contain rounded-lg" />
               </div>
               <div>
                 <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wider">{selectedProduct.category}</span>
@@ -371,8 +350,8 @@ export default function Home() {
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                   {filteredProducts.map((product) => (
                     <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border p-6 flex flex-col justify-between">
-                      <div className="h-64 overflow-hidden bg-gray-100 rounded-xl cursor-pointer p-4 flex items-center justify-center text-gray-400" onClick={() => viewProductDetails(product)}>
-                        <span>[ Imagen de Mueble ]</span>
+                      <div className="h-64 overflow-hidden bg-gray-50 rounded-xl cursor-pointer p-4 flex items-center justify-center" onClick={() => viewProductDetails(product)}>
+                        <img src={product.images} alt={product.title} className="w-full h-full object-contain" />
                       </div>
                       <h3 onClick={() => viewProductDetails(product)} className="font-bold text-xl text-gray-900 cursor-pointer mt-4">{product.title}</h3>
                       <p className="text-indigo-600 font-bold text-xl mt-2">${product.price.toFixed(2)}</p>
@@ -389,20 +368,13 @@ export default function Home() {
                 <div className="grid md:grid-cols-2 gap-10">
                   {partners.map((partner, index) => (
                     <div key={index} className="flex flex-col items-center text-center p-6 border rounded-2xl bg-gray-50">
-                      <div className="w-32 h-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-gray-400">[ Foto ]</div>
+                      <img src={partner.image} alt={partner.name} className="w-32 h-32 rounded-full object-cover mb-4" />
                       <h3 className="text-xl font-bold text-gray-900">{partner.name}</h3>
-                      <p className="text-indigo-600 font-medium text-sm">{partner.role}</p>
-                      <p className="text-gray-600 text-sm mt-3">{partner.description}</p>
+                      <p className="text-indigo-600 font-medium text-sm">{t[partner.roleKey]}</p>
+                      <p className="text-gray-600 text-sm mt-3">{t[partner.descKey]}</p>
                     </div>
                   ))}
                 </div>
-              </section>
-            )}
-
-            {activeSection === 'almacen' && (
-              <section className="bg-white rounded-2xl p-8 shadow-sm mb-16 text-center max-w-2xl mx-auto">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.warehouse}</h2>
-                <p className="text-gray-600">{t.warehouseDesc}</p>
               </section>
             )}
 
