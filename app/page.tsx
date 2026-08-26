@@ -291,9 +291,9 @@ export default function Home() {
       {/* ========================================== */}
       {/* BLOQUE 3: CABECERA Y LOGO                  */}
       {/* ========================================== */}
-      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
+      <header className=<header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-40">
         <button onClick={() => navigateTo('catalogo')} className="flex items-center justify-center focus:outline-none">
-           <img src="/logo.jpg" alt="Logo" style={{ width: '180px', height: 'auto' }} className="object-contain" />
+           <img src="/logo.jpg" alt="Logo" style={{ width: '250px', height: '80px' }} className="object-contain" />
         </button>
 
         <div className="flex items-center gap-6">
